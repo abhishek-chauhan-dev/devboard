@@ -21,8 +21,8 @@ describe('TaskCard', () => {
   });
 
   it('renders the assignee avatar when assigneeName is passed', () => {
-    render(<TaskCard task={baseTask} assigneeName="Alice Chen" />);
-    expect(screen.getByTitle('Alice Chen')).toBeInTheDocument();
+    render(<TaskCard task={baseTask} assigneeName="Abhishek Chauhan" />);
+    expect(screen.getByTitle('Abhishek Chauhan')).toBeInTheDocument();
   });
 
   it('handles a missing due_date without crashing', () => {
