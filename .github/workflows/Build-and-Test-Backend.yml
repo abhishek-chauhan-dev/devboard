@@ -12,23 +12,24 @@ jobs:
       - name: Code Clone
         uses: actions/checkout@v7
       
-      - name: Setup node
-        uses: actions/setup-node@v6
+      - name: Setup go
+        uses: actions/setup-go@v6
         with:
-          node-version: 22
-          cache: 'npm'
-          cache-dependency-path: ./backend/package-lock.json
+          go-version: '1.23'
+          go-version-file: 'go.mod'
+          cache: true
+          cache-dependency-path: 'devboard\backend\go.sum'
 
       - name: Install dependencies
-        run: npm install
+        run: go mod download
         working-directory: ./backend
 
       - name: Code build
-        run: npm run build
+        run: go build
         working-directory: ./backend  
       
       - name: Code test
-        run: npm run test
+        run: go test
         working-directory: ./backend
 
       - name: Login to Docker Hub
