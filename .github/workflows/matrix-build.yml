@@ -6,6 +6,7 @@ on:
       - install_packages
 env:
   IMAGE_TAG: 1.3
+
 jobs:
   frontend:
     strategy:
@@ -39,7 +40,7 @@ jobs:
         uses: docker/build-push-action@v7
         with:
           context: ./frontend
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/frontend:$IMAGE_TAG
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/frontend:${{ env.IMAGE_TAG }}
 
   backend:
     needs: 
@@ -76,5 +77,5 @@ jobs:
         uses: docker/build-push-action@v7
         with:
           context: ./backend
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/backend:$IMAGE_TAG        
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/backend:${{ env.IMAGE_TAG }}        
   
