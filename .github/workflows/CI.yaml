@@ -8,5 +8,7 @@ on:
 jobs:
   frontend:
     uses: ./.github/workflows/Build-and-Test-Frontend.yml
+    secrets: inherit
   backend:
     uses: ./.github/workflows/Build-and-Test-Backend.yml
+    secrets: inherit
