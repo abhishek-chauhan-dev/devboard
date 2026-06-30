@@ -55,7 +55,6 @@ jobs:
       - name: Setup go
         uses: actions/setup-go@v6
         with:
-          go-version-file: 'go.mod'
           go-version: ${{matrix.version}}
           cache: true
           cache-dependency-path: ./backend/go.sum
