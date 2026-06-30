@@ -1,0 +1,82 @@
+name: Matrix Build
+
+on:
+  push:
+    branches:
+      - install_packages
+
+jobs:
+  frontend:
+    strategy:
+      matrix:
+        version: [20, 22]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code clone
+        uses: actions/checkout@v7
+      - name: Setup node
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.version }}
+          cache: 'npm'
+          cache-dependency-path: ./frontend/package-lock.json 
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./frontend
+      - name: code lint
+        run: npm run lint
+        working-directory: ./frontend
+      - name: Code build
+        run: npm run build
+        working-directory: ./frontend
+      - name: Code test
+        run: npm run test
+        working-directory: ./frontend
+      - name: Login to Docker Hub
+        uses: docker/login-action@v4
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v7
+        with:
+          context: ./frontend
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/frontend:latest
+
+  backend:
+    needs: 
+      - frontend
+    strategy:
+      matrix:
+        version: [1.23, 1.24]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code clone
+        uses: actions/checkout@v7
+      - name: Setup go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: 'go.mod'
+          go-version: ${{matrix.version}}
+          cache: true
+          cache-dependency-path: ./backend/go.sum
+      - name: Install Dependencies
+        run: go mod download
+        working-directory: ./backend
+      - name: Code build
+        run: go build
+        working-directory: ./backend
+      - name: Code test
+        run: go test
+        working-directory: ./backend  
+      - name: Login to Docker Hub
+        uses: docker/login-action@v4
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v7
+        with:
+          context: ./backend
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/backend:latest        
+  
