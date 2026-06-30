@@ -1,0 +1,12 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - install_packages
+
+jobs:
+  frontend:
+    uses: ./.github/workflows/Build-and-Test-Frontend.yml
+  backend:
+    uses: ./.github/workflows/Build-and-Test-Backend.yml

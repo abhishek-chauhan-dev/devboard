@@ -1,9 +1,7 @@
 name: Build and Test Backend
 
 on:
-  push:
-    branches:
-      - install_packages
+  workflow_call:
 
 jobs:
   install-package-and-build-backend:
