@@ -1,0 +1,45 @@
+name: Build and Test Backend
+
+on:
+  push:
+    branches:
+      - install_packages
+
+jobs:
+  install-package-and-build-backend:
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Code Clone
+        uses: actions/checkout@v7
+      
+      - name: Setup node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: 'npm'
+          cache-dependency-path: ./backend/package-lock.json
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./backend
+
+      - name: Code build
+        run: npm run build
+        working-directory: ./backend  
+      
+      - name: Code test
+        run: npm run test
+        working-directory: ./backend
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v4
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v7
+        with:
+          context: ./backend
+          push: true
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/devboard-backend:v1.2
