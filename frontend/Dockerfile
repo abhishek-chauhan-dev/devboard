@@ -3,14 +3,14 @@ FROM dhi.io/node:26-dev AS build
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY ./frontend/package*.json ./
 
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 # Install vite explicitly if not already in package.json
 RUN npm list vite > /dev/null 2>&1 || npm install --no-save vite@5.4.11
 
-COPY . .
+COPY ./frontend .
 
 RUN npm run build
 
