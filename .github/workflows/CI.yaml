@@ -1,0 +1,70 @@
+# Goal: Code build, lint, test, and push image to DockerHub.
+
+name: Continuous Integration
+
+on:
+  push:
+    branches:
+      - advanced
+
+env: 
+  TEST_TAG: user/app:test
+  LATEST_TAG: user/app:latest
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./frontend
+    
+    steps:
+      - name: code clone
+        uses: actions/checkout@v7
+
+      - name: setup node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: 'npm'
+          cache-dependency-path: 'package-lock.json'
+
+      - name: install dependencies
+        run: npm install
+
+      - name: code build
+        run: npm build
+
+      - name: code lint
+        run: npm lint
+
+      - name: code test
+        run: npm test
+
+      - name: docker login
+        uses: docker/login-action@v4
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Test
+        run: |
+          docker run --rm ${{ env.TEST_TAG }}    
+      - name: Build and push
+        uses: docker/build-push-action@v7
+        with:
+          push: true
+          tags: ${{ env.LATEST_TAG }}
+
+
+  # backend:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - code clone
+  #     - setup python
+  #     - install dependencies
+  #     - code build
+  #     - code lint
+  #     - code test
+  #     - docker login
+  #     - build and push image to DockerHub
