@@ -55,16 +55,3 @@ jobs:
         with:
           push: true
           tags: ${{ env.LATEST_TAG }}
-
-
-  # backend:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - code clone
-  #     - setup python
-  #     - install dependencies
-  #     - code build
-  #     - code lint
-  #     - code test
-  #     - docker login
-  #     - build and push image to DockerHub
