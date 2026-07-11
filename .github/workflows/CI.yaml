@@ -49,7 +49,8 @@ jobs:
 
       - name: Build and push
         uses: docker/build-push-action@v7
-        context: .
         with:
+          context: .
+          file: ./frontend/Dockerfile
           push: true
           tags: ${{ env.FRONTEND_IMAGE_TAG }}
