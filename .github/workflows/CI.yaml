@@ -7,9 +7,8 @@ on:
     branches:
       - advanced
 
-env: 
-  TEST_TAG: user/app:test
-  LATEST_TAG: user/app:latest
+env:
+  FRONTEND_IMAGE_TAG: abhishekchauhandev/frontend:v1.3
 
 jobs:
   frontend:
@@ -37,21 +36,19 @@ jobs:
         run: npm run build
 
       - name: code lint
-        run: npm lint
+        run: npm run lint
 
       - name: code test
-        run: npm test
+        run: npm run test
 
       - name: docker login
         uses: docker/login-action@v4
         with:
           username: ${{ vars.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Test
-        run: |
-          docker run --rm ${{ env.TEST_TAG }}    
+          password: ${{ secrets.DOCKERHUB_TOKEN }}  
+
       - name: Build and push
         uses: docker/build-push-action@v7
         with:
           push: true
-          tags: ${{ env.LATEST_TAG }}
+          tags: ${{ env.FRONTEND_IMAGE_TAG }}
