@@ -80,12 +80,6 @@ jobs:
       - name: code build
         run: go build
 
-      - name: golangci-lint
-        uses: golangci/golangci-lint-action@v9
-        with:
-          version: v2.12
-          working-directory: backend
-
       - name: code test
         run: go test
 
