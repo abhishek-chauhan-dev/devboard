@@ -101,5 +101,5 @@ jobs:
     needs: 
       - frontend
       - backend
-    uses: ./github/workflows/CD.yaml
+    uses: ./.github/workflows/CD.yaml
     secrets: inherit
