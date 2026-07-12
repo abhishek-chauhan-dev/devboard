@@ -5,11 +5,11 @@ FROM golang:1.22-alpine
 WORKDIR /app
 
 # Download deps first for better layer caching.
-COPY go.mod go.sum ./
+COPY ./backend/go.mod ./backend/go.sum ./
 RUN go mod download
 
 # Build the binary.
-COPY . .
+COPY ./backend/ .
 RUN CGO_ENABLED=0 go build -o devboard-backend .
 
 # Run as a non-root user.
