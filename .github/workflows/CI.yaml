@@ -75,19 +75,13 @@ jobs:
           cache-dependency-path: ./backend/go.sum
 
       - name: install dependencies
-        run: go get .
+        run: go mod download
 
       - name: code build
         run: go build
 
       - name: code test
         run: go test
-
-      - name: Upload Go test results
-        uses: actions/upload-artifact@v4
-        with:
-          name: Go-results-1.22
-          path: TestResults-1.22.json  
 
       - name: docker login
         uses: docker/login-action@v4
@@ -99,6 +93,6 @@ jobs:
         uses: docker/build-push-action@v7
         with:
           context: .
-          file: ./frontend/Dockerfile
+          file: ./backend/Dockerfile
           push: true
           tags: ${{ env.BACKEND_IMAGE_TAG }}
