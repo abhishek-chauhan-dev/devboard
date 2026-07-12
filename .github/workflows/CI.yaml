@@ -97,7 +97,7 @@ jobs:
           push: true
           tags: ${{ env.BACKEND_IMAGE_TAG }}
 
-  deploy:
-    needs: [frontend,backend]
-    uses: ./.github/workflows/CD.yaml
-    secrets: inherit
+  # deploy:
+  #   needs: [frontend,backend]
+  #   uses: ./.github/workflows/CD.yaml
+  #   secrets: inherit
