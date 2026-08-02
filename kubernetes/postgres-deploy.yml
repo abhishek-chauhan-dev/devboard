@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: postgres
+  name: postgres
+  namespace: devboard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      volumes:
+      - name: postgres-data
+        persistentVolumeClaim:
+          claimName: devboard-pvc
+      - name: db-scripts
+        configMap:
+          name: db-scripts    
+      containers:
+      - image: postgres:16-alpine
+        name: postgres
+        volumeMounts:
+        - mountPath: "/var/lib/postgresql/data"
+          name: postgres-data
+        - mountPath: "/docker-entrypoint-initdb.d"
+          name: db-scripts
+        env:
+        - name: POSTGRES_USER
+          valueFrom:
+            configMapKeyRef:
+              key: POSTGRES_USER
+              name: db-config
+        - name: POSTGRES_DB
+          valueFrom:
+            configMapKeyRef:
+              key: POSTGRES_DB
+              name: db-config
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: POSTGRES_PASSWORD
+              name: db-secret
+        ports:
+        - containerPort: 5432
+        resources: 
+          limits:
+            cpu: 200m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+status: {}

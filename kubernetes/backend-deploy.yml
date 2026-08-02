@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: backend
+  name: backend
+  namespace: devboard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      serviceAccountName: devboard
+      containers:
+      - image: abhishekchauhandev/devboard-backend:v1.3
+        name: devboard-backend
+        ports:
+        - containerPort: 8080
+        env:
+        - name: POSTGRES_URL
+          value: postgres://devboard:devboard@postgres:5432/devboard?sslmode=disable
+        resources: 
+          limits:
+            cpu: 200m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+status: {}

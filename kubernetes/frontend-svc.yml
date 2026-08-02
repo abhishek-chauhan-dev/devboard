@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: "2026-08-01T10:38:15Z"
+  labels:
+    app: frontend
+  name: frontend
+  namespace: devboard
+  resourceVersion: "19418"
+  uid: 99182ccf-82a2-49b8-8816-9acfe6b27b35
+spec:
+  clusterIP: 10.96.247.225
+  clusterIPs:
+  - 10.96.247.225
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 4173
+  selector:
+    app: frontend
+  sessionAffinity: None
+  type: NodePort
+status:
+  loadBalancer: {}
