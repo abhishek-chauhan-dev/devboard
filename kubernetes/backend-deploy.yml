@@ -16,16 +16,15 @@ spec:
       labels:
         app: backend
     spec:
-      serviceAccountName: devboard
       containers:
       - image: abhishekchauhandev/devboard-backend:v1.3
         name: devboard-backend
-        ports:
-        - containerPort: 8080
         env:
         - name: POSTGRES_URL
           value: postgres://devboard:devboard@postgres:5432/devboard?sslmode=disable
-        resources: 
+        ports:
+        - containerPort: 8080
+        resources:
           limits:
             cpu: 200m
             memory: 256Mi

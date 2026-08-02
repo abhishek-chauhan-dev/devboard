@@ -4,9 +4,9 @@ metadata:
   name: devboard-pvc
   namespace: devboard
 spec:
+  storageClassName: gp2
   accessModes:
     - ReadWriteOnce
-  volumeMode: Filesystem
   resources:
     requests:
-      storage: 1Gi
+      storage: 5Gi

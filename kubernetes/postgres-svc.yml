@@ -2,16 +2,15 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: frontend
-  name: frontend
+    app: postgres
+  name: postgres
   namespace: devboard
 spec:
-  type: LoadBalancer
   ports:
-  - port: 80
+  - port: 5432
     protocol: TCP
-    targetPort: 4173
+    targetPort: 5432
   selector:
-    app: frontend
+    app: postgres
 status:
   loadBalancer: {}

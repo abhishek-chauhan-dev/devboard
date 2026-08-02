@@ -16,13 +16,12 @@ spec:
       labels:
         app: frontend
     spec:
-      serviceAccountName: devboard
       containers:
       - image: abhishekchauhandev/devboard-frontend:v1.3
         name: devboard-frontend
         ports:
         - containerPort: 4173
-        resources: 
+        resources:
           limits:
             cpu: 500m
             memory: 512Mi

@@ -10,43 +10,27 @@ spec:
   selector:
     matchLabels:
       app: postgres
-  strategy: {}
   template:
     metadata:
       labels:
         app: postgres
     spec:
       volumes:
-      - name: postgres-data
-        persistentVolumeClaim:
-          claimName: devboard-pvc
-      - name: db-scripts
-        configMap:
-          name: db-scripts    
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: devboard-pvc
+        - name: db-scripts
+          configMap:
+            name: db-scripts
       containers:
       - image: postgres:16-alpine
-        name: postgres
         volumeMounts:
         - mountPath: "/var/lib/postgresql/data"
           name: postgres-data
+          subPath: postgres-data
         - mountPath: "/docker-entrypoint-initdb.d"
           name: db-scripts
-        env:
-        - name: POSTGRES_USER
-          valueFrom:
-            configMapKeyRef:
-              key: POSTGRES_USER
-              name: db-config
-        - name: POSTGRES_DB
-          valueFrom:
-            configMapKeyRef:
-              key: POSTGRES_DB
-              name: db-config
-        - name: POSTGRES_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              key: POSTGRES_PASSWORD
-              name: db-secret
+        name: postgres
         ports:
         - containerPort: 5432
         resources: 
@@ -56,4 +40,19 @@ spec:
           requests:
             cpu: 100m
             memory: 128Mi
-status: {}
+        env:
+        - name: POSTGRES_USER
+          valueFrom:
+            configMapKeyRef:
+              name: db-config
+              key: POSTGRES_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: POSTGRES_PASSWORD
+        - name: POSTGRES_DB
+          valueFrom:
+            configMapKeyRef:
+              name: db-config
+              key: POSTGRES_DB
