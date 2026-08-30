@@ -1,0 +1,9 @@
+apiVersion: v1
+data:
+  POSTGRES_DB: ZGV2Ym9hcmQ=
+  POSTGRES_PASSWORD: ZGV2Ym9hcmQ=
+  POSTGRES_USER: ZGV2Ym9hcmQ=
+kind: Secret
+metadata:
+  name: db-creds
+  namespace: devboard
