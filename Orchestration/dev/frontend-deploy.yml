@@ -18,5 +18,12 @@ spec:
       containers:
       - name: frontend
         image: abhishekchauhandev/devboard-frontend:v1.4
+        resources:
+          requests:
+            memory: "200Mi"
+            cpu: "200m"
+          limits:
+            memory: "400Mi"
+            cpu: "300m"
         ports:
         - containerPort: 4173

@@ -18,6 +18,13 @@ spec:
       containers:
       - name: backend
         image: abhishekchauhandev/devboard-backend:v1.4
+        resources:
+          requests:
+            memory: "100Mi"
+            cpu: "100m"
+          limits:
+            memory: "200Mi"
+            cpu: "200m"   
         env:
         - name: POSTGRES_DB
           valueFrom:

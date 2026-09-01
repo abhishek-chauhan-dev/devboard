@@ -34,6 +34,13 @@ spec:
             secretKeyRef:
               name: db-creds
               key: POSTGRES_USER
+        resources:
+          requests:
+            memory: "100Mi"
+            cpu: "100m"
+          limits:
+            memory: "200Mi"
+            cpu: "200m"      
         ports:
         - containerPort: 5432
         volumeMounts:
