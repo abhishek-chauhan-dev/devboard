@@ -4,10 +4,8 @@ metadata:
   name: frontend
   namespace: devboard
 spec:
-  type: NodePort
   selector:
     app: frontend
   ports:
     - port: 8080
       targetPort: 4173
-      nodePort: 30001

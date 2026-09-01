@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: devboard
+  namespace: devboard
+spec:
+  hard:
+    requests.cpu: "800m"
+    requests.memory: "800Mi"
+    limits.cpu: "2"
+    limits.memory: "2Gi"
