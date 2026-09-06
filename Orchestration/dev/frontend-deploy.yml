@@ -17,21 +17,21 @@ spec:
     spec:
       # Uncomment the nodeSelector if you want to deploy the frontend on a specific node with hdd disk.
 
-      # nodeSelector:
-      #   disk: hdd
+      nodeSelector:
+        disk: hdd
 
       # Uncomment the affinity section if you want to deploy the frontend on a specific node with hostname "desktop-worker".
 
-      # affinity:
-      #   nodeAffinity:
-      #     preferredDuringSchedulingIgnoredDuringExecution:
-      #     - weight: 1
-      #       preference:
-      #         matchExpressions:
-      #         - key: kubernetes.io/hostname
-      #           operator: In
-      #           values:
-      #           - desktop-worker
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            preference:
+              matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: NotIn
+                values:
+                - desktop-worker
 
       # Implemented pod anti-affinity to ensure that the frontend and backend pods are not scheduled on the same node, while also implementing pod affinity to ensure that the frontend pod is scheduled on the same node as the postgres pod.
 
@@ -68,3 +68,10 @@ spec:
             cpu: "300m"
         ports:
         - containerPort: 4173
+
+      # Tolerations:
+      tolerations:
+      - key: "disk"
+        operator: "Equal"
+        value: "ssd"
+        effect: "NoSchedule"

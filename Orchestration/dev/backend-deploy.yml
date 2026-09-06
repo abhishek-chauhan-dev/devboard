@@ -17,21 +17,21 @@ spec:
     spec:
       # Uncomment the nodeSelector if you want to deploy the backend on a specific node with ssd disk.
 
-      # nodeSelector:
-      #   disk: ssd
+      nodeSelector:
+        disk: ssd
 
       # Uncomment the affinity section if you want to deploy the backend on a specific node with hostname "desktop-worker2".
 
-      # affinity:
-      #   nodeAffinity:
-      #     requiredDuringSchedulingIgnoredDuringExecution:
-      #       nodeSelectorTerms:
-      #       - matchExpressions:
-      #         - key: kubernetes.io/hostname
-      #           operator: In
-      #           values:
-      #           - desktop-worker2
-      
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - desktop-worker2
+
       containers:
       - name: backend
         image: abhishekchauhandev/devboard-backend:v1.4
