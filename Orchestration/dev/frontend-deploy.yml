@@ -15,19 +15,47 @@ spec:
       labels:
         app: frontend
     spec:
-      # Uncomment the nodeSelector if you want to deploy the frontend on a specific node with hdd disk. The affinity section is currently set to prefer scheduling on a node with hostname "desktop-worker".
+      # Uncomment the nodeSelector if you want to deploy the frontend on a specific node with hdd disk.
+
       # nodeSelector:
       #   disk: hdd
+
+      # Uncomment the affinity section if you want to deploy the frontend on a specific node with hostname "desktop-worker".
+
+      # affinity:
+      #   nodeAffinity:
+      #     preferredDuringSchedulingIgnoredDuringExecution:
+      #     - weight: 1
+      #       preference:
+      #         matchExpressions:
+      #         - key: kubernetes.io/hostname
+      #           operator: In
+      #           values:
+      #           - desktop-worker
+
+      # Implemented pod anti-affinity to ensure that the frontend and backend pods are not scheduled on the same node, while also implementing pod affinity to ensure that the frontend pod is scheduled on the same node as the postgres pod.
+
       affinity:
-        nodeAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 1
-            preference:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
               matchExpressions:
-              - key: kubernetes.io/hostname
+              - key: app
                 operator: In
                 values:
-                - desktop-worker
+                - backend
+            topologyKey: "kubernetes.io/hostname"
+
+        podAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - postgres
+              topologyKey: "kubernetes.io/hostname"      
+
       containers:
       - name: frontend
         image: abhishekchauhandev/devboard-frontend:v1.4
