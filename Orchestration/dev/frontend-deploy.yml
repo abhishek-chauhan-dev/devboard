@@ -15,6 +15,19 @@ spec:
       labels:
         app: frontend
     spec:
+      # Uncomment the nodeSelector if you want to deploy the frontend on a specific node with hdd disk. The affinity section is currently set to prefer scheduling on a node with hostname "desktop-worker".
+      # nodeSelector:
+      #   disk: hdd
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            preference:
+              matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - desktop-worker
       containers:
       - name: frontend
         image: abhishekchauhandev/devboard-frontend:v1.4
