@@ -5,8 +5,8 @@ metadata:
   namespace: devboard
 spec:
   limits:
-  - max:
+  - max: # Max cpu limit for a container
       cpu: "800m"
-    min:
+    min: # Min cpu limit for a container
       cpu: "200m"
     type: Container
