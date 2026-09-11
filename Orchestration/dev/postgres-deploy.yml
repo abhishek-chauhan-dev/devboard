@@ -18,6 +18,29 @@ spec:
       containers:
       - name: postgres
         image: postgres:16-alpine
+        startupProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - psql -U ${POSTGRES_USER} -d ${POSTGRES_DB}
+          failureThreshold: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - psql -U ${POSTGRES_USER} -d ${POSTGRES_DB}
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - psql -U ${POSTGRES_USER} -d ${POSTGRES_DB}
+          periodSeconds: 10      
         env:
         - name: POSTGRES_DB
           valueFrom:
