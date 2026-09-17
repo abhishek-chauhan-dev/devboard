@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: devboard
+  labels:
+    app: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:16-alpine
+        startupProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - psql -U ${POSTGRES_USER} -d ${POSTGRES_DB}
+          failureThreshold: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - psql -U ${POSTGRES_USER} -d ${POSTGRES_DB}
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - psql -U ${POSTGRES_USER} -d ${POSTGRES_DB}
+          periodSeconds: 10      
+        env:
+        - name: POSTGRES_DB
+          valueFrom:
+            secretKeyRef:
+              name: db-creds
+              key: POSTGRES_DB
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-creds
+              key: POSTGRES_PASSWORD
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: db-creds
+              key: POSTGRES_USER
+        resources:
+          requests:
+            memory: "100Mi"
+            cpu: "100m"
+          limits:
+            memory: "200Mi"
+            cpu: "200m"      
+        ports:
+        - containerPort: 5432
+        volumeMounts:
+        - name: db-scripts
+          mountPath: "/docker-entrypoint-initdb.d"
+          readOnly: true
+        - mountPath: "/var/lib/postgresql/data"
+          name: data  
+      volumes:
+      - name: db-scripts
+        configMap:
+          name: db-scripts
+      - name: data
+        persistentVolumeClaim:
+          claimName: devboard-pvc
