@@ -74,7 +74,7 @@ service:
 
   frontend:
     protocol: TCP
-    port: 4173
+    port: 8080
     targetPort: 4173  
 
   nginx:
