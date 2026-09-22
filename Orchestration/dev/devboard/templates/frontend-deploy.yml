@@ -1,29 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
-  namespace: devboard
+  name: {{ .Values.deployment.frontend.name }}
+  namespace: {{ .Values.namespace }}
   labels:
-    app: frontend
+    app: {{ .Values.deployment.frontend.name }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
-      app: frontend
+      app: {{ .Values.deployment.frontend.name }}
   template:
     metadata:
       labels:
-        app: frontend
+        app: {{ .Values.deployment.frontend.name }}
     spec:
       containers:
-      - name: frontend
-        image: abhishekchauhandev/devboard-frontend:v1.4
+      - name: {{ .Values.deployment.frontend.name }}
+        image: {{ .Values.deployment.frontend.image }}
         resources:
           requests:
-            memory: "200Mi"
-            cpu: "200m"
+            memory: {{ .Values.deployment.frontend.resources.requests.memory }}
+            cpu: {{ .Values.deployment.frontend.resources.requests.cpu }}
           limits:
-            memory: "400Mi"
-            cpu: "300m"
+            memory: {{ .Values.deployment.frontend.resources.limits.memory }}
+            cpu: {{ .Values.deployment.frontend.resources.limits.cpu }}
         ports:
-        - containerPort: 4173
+        - containerPort: {{ .Values.deployment.frontend.port }}

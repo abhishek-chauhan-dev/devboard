@@ -1,43 +1,43 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-proxy
-  namespace: devboard
+  name: {{ .Values.deployment.nginx.name }}
+  namespace: {{ .Values.namespace }}
   labels:
-    app: proxy
+    app: {{ .Values.deployment.nginx.name }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
-      app: proxy
+      app: {{ .Values.deployment.nginx.name }}
   template:
     metadata:
       labels:
-        app: proxy
+        app: {{ .Values.deployment.nginx.name }}
     spec:
       containers:
-      - name: nginx-proxy
-        image: nginx:1.30.4
+      - name: {{ .Values.deployment.nginx.name }}
+        image: {{ .Values.deployment.nginx.image }}
         resources:
           requests:
-            memory: "100Mi"
-            cpu: "100m"
+            memory: {{ .Values.deployment.nginx.resources.requests.memory }}
+            cpu: {{ .Values.deployment.nginx.resources.requests.cpu }}
           limits:
-            memory: "200Mi"
-            cpu: "200m"
+            memory: {{ .Values.deployment.nginx.resources.limits.memory }}
+            cpu: {{ .Values.deployment.nginx.resources.limits.cpu }}
         command: ["/docker-entrypoint.sh"]    
         args:
         - nginx
         - -g
         - "daemon off;"
         ports:
-        - containerPort: 80
+        - containerPort: {{ .Values.deployment.nginx.port }}
         volumeMounts:
-        - name: nginx-config
+        - name: {{ .Values.deployment.nginx.name }}-config
           mountPath: "/etc/nginx/conf.d/default.conf"
           subPath: nginx.conf
           readOnly: true 
       volumes:
-      - name: nginx-config
+      - name: {{ .Values.deployment.nginx.name }}-config
         configMap:
-          name: nginx-config
+          name: {{ .Values.deployment.nginx.name }}-config

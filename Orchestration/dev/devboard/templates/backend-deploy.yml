@@ -1,42 +1,42 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend
-  namespace: devboard
+  name: {{ .Values.deployment.backend.name }}
+  namespace: {{ .Values.namespace }}
   labels:
-    app: backend
+    app: {{ .Values.deployment.backend.name }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
-      app: backend
+      app: {{ .Values.deployment.backend.name }}
   template:
     metadata:
       labels:
-        app: backend
+        app: {{ .Values.deployment.backend.name }}
     spec:
       containers:
-      - name: backend
-        image: abhishekchauhandev/devboard-backend:v1.4
+      - name: {{ .Values.deployment.backend.name }}
+        image: {{ .Values.deployment.backend.image }}
         resources:
           requests:
-            memory: "100Mi"
-            cpu: "100m"
+            memory: {{ .Values.deployment.backend.resources.requests.memory }}
+            cpu: {{ .Values.deployment.backend.resources.requests.cpu }}
           limits:
-            memory: "200Mi"
-            cpu: "200m"   
+            memory: {{ .Values.deployment.backend.resources.limits.memory }}
+            cpu: {{ .Values.deployment.backend.resources.limits.cpu }}
         livenessProbe:
           httpGet:
-            path: /health
-            port: 8080
-          initialDelaySeconds: 3
-          periodSeconds: 3    
+            path: {{ .Values.deployment.backend.path }}
+            port: {{ .Values.deployment.backend.port }}
+          initialDelaySeconds: {{ .Values.deployment.backend.initialDelaySeconds }}
+          periodSeconds: {{ .Values.deployment.backend.periodSeconds }}
         readinessProbe:
           httpGet:
-            path: /health
-            port: 8080
-          initialDelaySeconds: 3
-          periodSeconds: 3    
+            path: {{ .Values.deployment.backend.path }}
+            port: {{ .Values.deployment.backend.port }}
+          initialDelaySeconds: {{ .Values.deployment.backend.initialDelaySeconds }}
+          periodSeconds: {{ .Values.deployment.backend.periodSeconds }}
         env:
         - name: POSTGRES_DB
           valueFrom:
@@ -56,4 +56,4 @@ spec:
         - name: POSTGRES_URL
           value: "postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:5432/$(POSTGRES_DB)?sslmode=disable"
         ports:
-        - containerPort: 8080
+        - containerPort: {{ .Values.deployment.backend.port }}

@@ -1,46 +1,46 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgres
-  namespace: devboard
+  name: {{ .Values.deployment.postgres.name }}
+  namespace: {{ .Values.namespace }}
   labels:
-    app: postgres
+    app: {{ .Values.deployment.postgres.name }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
-      app: postgres
+      app: {{ .Values.deployment.postgres.name }}
   template:
     metadata:
       labels:
-        app: postgres
+        app: {{ .Values.deployment.postgres.name }}
     spec:
       containers:
-      - name: postgres
-        image: postgres:16-alpine
+      - name: {{ .Values.deployment.postgres.name }}
+        image: {{ .Values.deployment.postgres.image }}
         startupProbe:
           exec:
             command:
             - /bin/sh
             - -c
             - psql -U ${POSTGRES_USER} -d ${POSTGRES_DB}
-          failureThreshold: 30
-          periodSeconds: 10
+          failureThreshold: {{ .Values.deployment.postgres.failureThreshold }}
+          periodSeconds: {{ .Values.deployment.postgres.periodSeconds }}
         readinessProbe:
           exec:
             command:
             - /bin/sh
             - -c
             - psql -U ${POSTGRES_USER} -d ${POSTGRES_DB}
-          initialDelaySeconds: 15
-          periodSeconds: 10
+          initialDelaySeconds: {{ .Values.deployment.postgres.initialDelaySeconds }}
+          periodSeconds: {{ .Values.deployment.postgres.periodSeconds }}
         livenessProbe:
           exec:
             command:
             - /bin/sh
             - -c
             - psql -U ${POSTGRES_USER} -d ${POSTGRES_DB}
-          periodSeconds: 10      
+          periodSeconds: {{ .Values.deployment.postgres.periodSeconds }}     
         env:
         - name: POSTGRES_DB
           valueFrom:
@@ -59,13 +59,13 @@ spec:
               key: POSTGRES_USER
         resources:
           requests:
-            memory: "100Mi"
-            cpu: "100m"
+            memory: {{ .Values.deployment.postgres.resources.requests.memory }}
+            cpu: {{ .Values.deployment.postgres.resources.requests.cpu }}  
           limits:
-            memory: "200Mi"
-            cpu: "200m"      
+            memory: {{ .Values.deployment.postgres.resources.limits.memory }}
+            cpu: {{ .Values.deployment.postgres.resources.limits.cpu }}      
         ports:
-        - containerPort: 5432
+        - containerPort: {{ .Values.deployment.postgres.port }}
         volumeMounts:
         - name: db-scripts
           mountPath: "/docker-entrypoint-initdb.d"

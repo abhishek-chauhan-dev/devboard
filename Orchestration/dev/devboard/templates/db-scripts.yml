@@ -70,4 +70,4 @@ data:
 kind: ConfigMap
 metadata:
   name: db-scripts
-  namespace: devboard
+  namespace: {{ .Values.namespace }}

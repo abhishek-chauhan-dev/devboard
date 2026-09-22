@@ -11,5 +11,5 @@ data:
     $scheme;\n\t}\n\n}\n"
 kind: ConfigMap
 metadata:
-  name: nginx-config
-  namespace: devboard
+  name: {{ .Values.deployment.nginx.name }}-config
+  namespace: {{ .Values.namespace }}

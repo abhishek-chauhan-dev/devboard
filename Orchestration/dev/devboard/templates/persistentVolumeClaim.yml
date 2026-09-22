@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: devboard-pvc
-  namespace: devboard
+  name: {{ .Values.PersistentVolumeClaim.name }}
+  namespace: {{ .Values.namespace }}
 spec:
   accessModes:
-    - ReadWriteOnce
-  storageClassName: standard
+    - {{ .Values.PersistentVolumeClaim.accessModes }}
+  storageClassName: {{ .Values.PersistentVolumeClaim.storageClassName }}
   resources:
     requests:
-      storage: 2Gi
+      storage: {{ .Values.PersistentVolumeClaim.storage }}

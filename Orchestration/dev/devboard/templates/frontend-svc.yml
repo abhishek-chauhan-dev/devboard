@@ -1,11 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend
-  namespace: devboard
+  name: {{ .Values.deployment.frontend.name }}
+  namespace: {{ .Values.namespace }}
 spec:
   selector:
-    app: frontend
+    app: {{ .Values.deployment.frontend.name }}
   ports:
-    - port: 8080
-      targetPort: 4173
+    - protocol: {{ .Values.service.frontend.protocol }}
+      port: {{ .Values.service.frontend.port }}
+      targetPort: {{ .Values.service.frontend.targetPort }}
