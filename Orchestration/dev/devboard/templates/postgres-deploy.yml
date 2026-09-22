@@ -78,4 +78,4 @@ spec:
           name: db-scripts
       - name: data
         persistentVolumeClaim:
-          claimName: devboard-pvc
+          claimName: {{ .Values.PersistentVolumeClaim.name }}

@@ -1,10 +1,10 @@
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: backend-pdb
-  namespace: devboard
+  name: {{ .Values.deployment.backend.name }}-pdb
+  namespace: {{ .Values.namespace }}
 spec:
-  maxUnavailable: 20%
+  maxUnavailable: {{ .Values.PodDisruptionBudget.backend.maxUnavailable }}
   selector:
     matchLabels:
-      app: backend
+      app: {{ .Values.deployment.backend.name }}

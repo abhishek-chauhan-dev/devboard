@@ -1,10 +1,10 @@
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: frontend-pdb
-  namespace: devboard
+  name: {{ .Values.deployment.frontend.name }}-pdb
+  namespace: {{ .Values.namespace }}
 spec:
-  minAvailable: 3
+  minAvailable: {{ .Values.PodDisruptionBudget.frontend.minAvailable }}
   selector:
     matchLabels:
-      app: frontend
+      app: {{ .Values.deployment.frontend.name }}
