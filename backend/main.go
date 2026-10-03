@@ -67,6 +67,9 @@ func main() {
 	log.Println("[backend] connected to postgres")
 
 	r := gin.Default()
+	metrics := NewMetrics()
+	r.Use(metrics.Middleware())
+	r.GET("/metrics", gin.WrapH(metrics.Handler()))
 
 	r.GET("/health", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"status": "ok", "service": "backend"})
