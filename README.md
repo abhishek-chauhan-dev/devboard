@@ -154,11 +154,19 @@ Stop it:
 docker compose down
 ```
 
-| Piece    | Open in browser / curl        | Notes                                   |
-| -------- | ----------------------------- | --------------------------------------- |
-| Frontend | http://localhost:8080         | the app; forwards `/api` to the backend |
-| Backend  | http://localhost:8081/health  | the Go API (the app uses it via `/api`) |
-| Postgres | localhost:5432                | user / password: `devboard` / `devboard`|
+| Piece      | Open in browser / curl       | Notes                                      |
+| ---------- | ---------------------------- | ------------------------------------------ |
+| Frontend   | http://localhost:8080        | the app; forwards `/api` to the backend   |
+| Backend    | http://localhost:8081/health | API health; metrics: http://localhost:8081/metrics |
+| Prometheus | http://localhost:9090        | scrapes backend metrics every 15 seconds         |
+| Postgres   | localhost:5432               | user / password: `devboard` / `devboard`  |
+
+The backend exports HTTP request totals, request-duration histograms, in-flight
+request count, and Go/process runtime metrics in Prometheus format. Try a few
+API requests, then open Prometheus and query `devboard_http_requests_total` or
+`devboard_http_request_duration_seconds`. Request metrics use route templates
+(such as `/tasks/:id`) rather than individual URLs to keep label cardinality
+bounded.
 
 ---
 
@@ -273,5 +281,3 @@ To allow the CI pipeline to build and push images to Docker Hub:
    - `DOCKERHUB_USERNAME`: Your Docker Hub username.
 3. Under the **Secrets** tab, add:
    - `DOCKERHUB_TOKEN`: A Personal Access Token (PAT) generated from Docker Hub.
-
-
