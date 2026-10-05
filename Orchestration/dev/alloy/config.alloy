@@ -1,0 +1,22 @@
+// 1. Discover log files to scrape (Linux system logs)
+local.file_match "system_logs" {
+  path_targets = [
+    { "__path__" = "/var/log/*.log" },
+    { "__path__" = "/var/log/syslog" },
+    { "__path__" = "/var/log/auth.log" },
+  ]
+}
+
+// 2. Read the log files found by file_match
+loki.source.file "system_logs_scraper" {
+  targets    = local.file_match.system_logs.targets
+  forward_to = [loki.write.endpoint.receiver]
+}
+
+// 3. Send the log streams to Loki
+loki.write "endpoint" {
+  endpoint {
+    // Use the container name 'loki' if on the same Docker network
+    url = "http://loki:3100/loki/api/v1/push"
+  }
+}
