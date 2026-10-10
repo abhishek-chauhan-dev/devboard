@@ -7,7 +7,7 @@
 # 4. Run tests.
 # 5. Build the code.
 
-name: CI
+name: Continuous Integration
 
 on:
   workflow_dispatch:
