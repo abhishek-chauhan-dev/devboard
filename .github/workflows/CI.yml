@@ -1,7 +1,7 @@
-# Goal - In this workflow, we will implement Continuous Integration (CI) of frontend.
+# Goal - In this workflow, we will implement Continuous Integration (CI) of frontend + backend.
 # Steps:
 # 1. Checkout the code from the repository.
-# 2. Setup Node.js environment.
+# 2. Setup Node.js/go environment.
 # 3. Install dependencies.
 # 4. Lint the code.
 # 5. Run tests.
@@ -56,3 +56,17 @@ jobs:
           context: ./frontend
           push: true
           tags: abhishekchauhandev/devboard-frontend:${{ github.sha }}
+
+  backend:  
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Setup go
+        uses: actions/setup-go@v7
+        with:
+          go-version: '1.23'
+          go-version-file: './backend/go.mod'
+          cache-dependency-path: './backend/go.sum'
+          architecture: 'x64'
