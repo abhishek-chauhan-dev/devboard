@@ -97,7 +97,11 @@ func listProjects(c *gin.Context) {
 		fail(c, err)
 		return
 	}
-	defer rows.Close()
+	defer func() {
+		if err := rows.Close(); err != nil {
+			log.Printf("[backend] ERROR closing project rows: %v", err)
+		}
+	}()
 
 	projects := []Project{}
 	for rows.Next() {
@@ -109,6 +113,10 @@ func listProjects(c *gin.Context) {
 		}
 		p.CreatedAt = created.Format(time.RFC3339)
 		projects = append(projects, p)
+	}
+	if err := rows.Err(); err != nil {
+		fail(c, err)
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"projects": projects})
 }
@@ -150,7 +158,11 @@ func listTasks(c *gin.Context) {
 		fail(c, err)
 		return
 	}
-	defer rows.Close()
+	defer func() {
+		if err := rows.Close(); err != nil {
+			log.Printf("[backend] ERROR closing task rows: %v", err)
+		}
+	}()
 
 	tasks, err := scanTasks(rows)
 	if err != nil {
@@ -255,7 +267,11 @@ func searchTasks(c *gin.Context) {
 		fail(c, err)
 		return
 	}
-	defer rows.Close()
+	defer func() {
+		if err := rows.Close(); err != nil {
+			log.Printf("[backend] ERROR closing search rows: %v", err)
+		}
+	}()
 
 	tasks, err := scanTasks(rows)
 	if err != nil {
