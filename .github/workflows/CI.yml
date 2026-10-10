@@ -1,10 +1,11 @@
 # Goal - In this workflow, we will implement Continuous Integration (CI) of frontend.
 # Steps:
 # 1. Checkout the code from the repository.
-# 2. Install dependencies.
-# 3. Lint the code.
-# 4. Run tests.
-# 5. Build the code.
+# 2. Setup Node.js environment.
+# 3. Install dependencies.
+# 4. Lint the code.
+# 5. Run tests.
+# 6. Build the code.
 
 name: Continuous Integration
 
@@ -21,3 +22,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
 
+      - name: Setup node
+        uses: actions/setup-node@v7
+        with:
+          node-version: '20'
+          package-manager-cache: true
+          cache-dependency-path: './frontend'
