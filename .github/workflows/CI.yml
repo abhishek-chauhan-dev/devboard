@@ -70,3 +70,8 @@ jobs:
           go-version-file: './backend/go.mod'
           cache-dependency-path: './backend/go.sum'
           architecture: 'x64'
+
+      - name: Install dependencies
+        run: |
+          cd backend
+          go get .   
