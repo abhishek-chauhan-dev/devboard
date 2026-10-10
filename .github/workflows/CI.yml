@@ -1,5 +1,4 @@
-# Goal - In this workflow, we will implement Continuous Integration (CI) of frontend code.
-# As a starting point, we will run our workflow manually to test.
+# Goal - In this workflow, we will implement Continuous Integration (CI) of frontend.
 # Steps:
 # 1. Checkout the code from the repository.
 # 2. Install dependencies.
@@ -10,7 +9,9 @@
 name: Continuous Integration
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - day1
 
 jobs:
 
