@@ -33,3 +33,8 @@ jobs:
         run: |
           cd frontend
           npm install --legacy-peer-deps
+
+      - name: Lint code
+        run: |
+          cd frontend
+          npm run lint    
