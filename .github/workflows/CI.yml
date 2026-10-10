@@ -81,3 +81,10 @@ jobs:
         with:
           version: v2.13
           working-directory: ./backend
+
+      - name: Run tests
+        uses: robherley/go-test-action@v1
+        with:
+          go-version: '1.23'
+          moduleDirectory: './backend'    
+          working-directory: ./backend
