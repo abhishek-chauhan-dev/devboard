@@ -1,0 +1,22 @@
+# Goal - In this workflow, we will implement Continuous Integration (CI) of frontend code.
+# As a starting point, we will run our workflow manually to test.
+# Steps:
+# 1. Checkout the code from the repository.
+# 2. Install dependencies.
+# 3. Lint the code.
+# 4. Run tests.
+# 5. Build the code.
+
+name: CI
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
