@@ -1,0 +1,22 @@
+# Goal: Deploy the application in Staging environment.
+# Steps:
+# 1. Setup Docker environment.
+# 2. Checkout the code from the repository.
+# 3. Run each container (postgres -> backend -> frontend).
+
+name: Continuous Deployment
+
+on:
+  workflow_call:
+
+jobs:
+  deploy:
+    runs-on: devboard
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Run postgres, backend, and frontend containers
+        run: |
+          cp .env.example .env
+          docker compose up --build -d
