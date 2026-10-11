@@ -30,7 +30,7 @@ services:
 
   backend:
     # build = local; image = the tag CI pushes and CD pulls (IMAGE_TAG, else latest).
-    build: ./backend
+    # build: ./backend
     image: abhishekchauhandev/devboard-backend:${IMAGE_TAG:-latest}
     environment:
       PORT: "${BACKEND_PORT}"
@@ -43,7 +43,7 @@ services:
       - "${BACKEND_HOST_PORT}:${BACKEND_PORT}"   # host:container — direct curl/debug; the UI uses the gateway
 
   frontend:
-    build: ./frontend
+    # build: ./frontend
     image: abhishekchauhandev/devboard-frontend:${IMAGE_TAG:-latest}
     depends_on:
       - backend
