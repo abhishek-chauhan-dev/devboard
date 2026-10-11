@@ -57,7 +57,7 @@ services:
     ports:
       - "${PROMETHEUS_HOST_PORT:-9090}:9090"
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./:/etc/prometheus
       - prometheus_data:/prometheus
 
 volumes:
