@@ -57,8 +57,13 @@ services:
     ports:
       - "${PROMETHEUS_HOST_PORT:-9090}:9090"
     volumes:
-      - ./:/etc/prometheus
+      - ./devboard/Orchestration/dev/prometheus/:/etc/prometheus
       - prometheus_data:/prometheus
+
+  node-exporter:
+    image: dhi.io/node-exporter:1
+    ports:
+      - "${NODE_EXPORTER_HOST_PORT:-9100}:9100"    
 
 volumes:
   pgdata:
