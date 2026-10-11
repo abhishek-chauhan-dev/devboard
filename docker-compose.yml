@@ -60,10 +60,12 @@ services:
       - ./Orchestration/dev/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - prometheus_data:/prometheus
 
-  # node-exporter:
-  #   image: dhi.io/node-exporter:1
-  #   ports:
-  #     - "${NODE_EXPORTER_HOST_PORT:-9100}:9100"    
+  node-exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    depends_on:
+      - prometheus
+    ports:
+      - "${NODE_EXPORTER_HOST_PORT:-9100}:9100"    
 
 volumes:
   pgdata:
