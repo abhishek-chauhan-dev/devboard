@@ -8,7 +8,7 @@ on:
       - day1
 
 jobs:
-  build:
+  build-test-and-push:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
