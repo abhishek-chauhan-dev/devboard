@@ -9,10 +9,7 @@
 
 name: Continuous Integration
 
-on:
-  push:
-    branches:
-      - day1
+on: workflow_dispatch
 
 jobs:
 

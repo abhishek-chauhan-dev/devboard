@@ -1,0 +1,22 @@
+# Goal - In this workflow, we will implement DevSecOps as part of Continuous Integration.
+
+name: DevSecOps
+
+on:
+  push:
+    branches:
+      - day1
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v7
+
+      - name: Setup node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 20
+          architecture: x86
+          cache-dependency-path: ./frontend    
