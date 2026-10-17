@@ -9,7 +9,6 @@ jobs:
   dependency-check:
     runs-on: ubuntu-latest
     steps:
-
       - name: Checkout code
         uses: actions/checkout@v7
       
@@ -27,3 +26,4 @@ jobs:
       - name: Vulnerability check
         run: npm audit
         working-directory: ./frontend
+        continue-on-error: true

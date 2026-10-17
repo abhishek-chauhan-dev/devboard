@@ -23,3 +23,7 @@ jobs:
   dependency-check:
     needs: [code-quality, code-lint, code-test]
     uses: ./.github/workflows/dependency-check.yml  
+
+  secret-scan:
+    needs: [code-quality, code-lint, code-test, dependency-check]
+    uses: ./.github/workflows/secret-leaks.yml
