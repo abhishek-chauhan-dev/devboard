@@ -8,5 +8,6 @@ on:
       - day1
 
 jobs:
-  build-test-and-push:
+  
+  code-quality:
     uses: ./.github/workflows/code-quality.yml
