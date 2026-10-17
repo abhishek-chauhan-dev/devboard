@@ -11,12 +11,5 @@ jobs:
   build-test-and-push:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v7
-
-      - name: Setup node
-        uses: actions/setup-node@v7
-        with:
-          node-version: 20
-          package-manager-cache: true
-          cache-dependency-path: ./frontend    
+      - name: code-quality
+        uses: ./.github/workflows/code-quality.yml
