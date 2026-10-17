@@ -16,7 +16,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v7
         with:
-          node-version: 24
+          node-version: 20
           package-manager-cache: true
           cache-dependency-path: ./frontend/package-lock.json
       
@@ -25,5 +25,5 @@ jobs:
         working-directory: ./frontend
       
       - name: Vulnerability check
-        run: npm audit fix --force
+        run: npm audit
         working-directory: ./frontend
