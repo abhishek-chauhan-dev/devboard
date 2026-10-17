@@ -11,3 +11,6 @@ jobs:
   
   code-quality:
     uses: ./.github/workflows/code-quality.yml
+
+  code-lint:
+    uses: ./.github/workflows/code-lint.yml  
