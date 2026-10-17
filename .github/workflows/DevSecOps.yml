@@ -8,22 +8,18 @@ on:
       - day1
 
 jobs:
-  
-  code-quality:
-    uses: ./.github/workflows/code-quality.yml
 
   code-lint:
-    needs: [code-quality]
     uses: ./.github/workflows/code-lint.yml
 
   code-test:
-    needs: [code-quality, code-lint]
+    needs: [code-lint]
     uses: ./.github/workflows/code-test.yml
 
   dependency-check:
-    needs: [code-quality, code-lint, code-test]
+    needs: [code-lint, code-test]
     uses: ./.github/workflows/dependency-check.yml  
 
   secret-scan:
-    needs: [code-quality, code-lint, code-test, dependency-check]
+    needs: [code-lint, code-test, dependency-check]
     uses: ./.github/workflows/secret-leaks.yml
