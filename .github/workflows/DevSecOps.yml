@@ -13,4 +13,9 @@ jobs:
     uses: ./.github/workflows/code-quality.yml
 
   code-lint:
-    uses: ./.github/workflows/code-lint.yml  
+    needs: [code-quality]
+    uses: ./.github/workflows/code-lint.yml
+
+  code-test:
+    needs: [code-quality, code-lint]
+    uses: ./.github/workflows/code-test.yml
