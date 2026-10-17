@@ -1,0 +1,27 @@
+# Goal - In this workflow, I will ensure to validate dependencies in my project.
+
+name: Dependency Check
+
+on:
+  workflow_call:
+
+jobs:
+  dependency-check:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout
+      
+      - name: Setup node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          package-manager-cache: true
+          cache-dependency-path: ./frontend/package-lock.json
+      
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+      
+      - name: Vulnerability check
+        run: npm audit

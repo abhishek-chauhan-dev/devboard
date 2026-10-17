@@ -19,3 +19,7 @@ jobs:
   code-test:
     needs: [code-quality, code-lint]
     uses: ./.github/workflows/code-test.yml
+
+  dependency-check:
+    needs: [code-quality, code-lint, code-test]
+    uses: ./.github/workflows/dependency-check.yml  
