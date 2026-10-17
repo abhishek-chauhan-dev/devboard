@@ -24,6 +24,6 @@ jobs:
         run: npm install --legacy-peer-deps
         working-directory: ./frontend
 
-      - name: Install Linter         
-        run: npm init @eslint/config@latest
+      - name: Run Linter 
+        run: npm run lint
         working-directory: ./frontend
