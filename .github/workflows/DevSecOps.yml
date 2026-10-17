@@ -9,7 +9,4 @@ on:
 
 jobs:
   build-test-and-push:
-    runs-on: ubuntu-latest
-    steps:
-      - name: code-quality
-        uses: ./.github/workflows/code-quality.yml
+    uses: ./.github/workflows/code-quality.yml
