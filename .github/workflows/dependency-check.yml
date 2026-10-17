@@ -25,5 +25,5 @@ jobs:
         working-directory: ./frontend
       
       - name: Vulnerability check
-        run: npm audit fix
+        run: npm audit fix --force
         working-directory: ./frontend
