@@ -39,7 +39,8 @@ jobs:
 
       - name: Install go dependencies
         run: |
-          go get ./backend
+          cd backend
+          go get .
 
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v9
