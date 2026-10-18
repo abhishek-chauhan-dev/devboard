@@ -9,6 +9,8 @@ jobs:
   dependency-check:
     runs-on: ubuntu-latest
     steps:
+      
+      # Frontend code
       - name: Checkout code
         uses: actions/checkout@v7
       
@@ -27,3 +29,20 @@ jobs:
         run: npm audit
         working-directory: ./frontend
         continue-on-error: true
+
+      # Backend code  
+      - name: Setup go
+        uses: actions/setup-go@v7
+        with: 
+          go-version: '1.22'
+          cache: true
+          cache-dependency-path: './backend/go.sum'
+
+      - name: Install Dependencies
+        run: go mod download    
+        working-directory: backend
+
+      - name: Run Govulncheck
+        uses: golang/govulncheck-action@v1
+        with:
+          go-package: './backend/...'  
