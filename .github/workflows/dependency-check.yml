@@ -46,3 +46,4 @@ jobs:
         uses: golang/govulncheck-action@v1
         with:
           go-package: './backend/...'  
+        working-directory: backend  
