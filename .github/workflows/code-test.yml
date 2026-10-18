@@ -40,3 +40,7 @@ jobs:
       - name: Install Dependencies
         run: go mod download    
         working-directory: backend
+
+      - name: Test with the Go CLI
+        run: go test  
+        working-directory: backend
