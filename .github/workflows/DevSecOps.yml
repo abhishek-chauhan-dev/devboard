@@ -23,3 +23,7 @@ jobs:
   secret-scan:
     needs: [code-lint, code-test, dependency-check]
     uses: ./.github/workflows/secret-leaks.yml
+  
+  dockerfile-lint:
+    needs: [code-lint, code-test, dependency-check, secret-scan]
+    uses: ./.github/workflows/Dockerfile-lint.yml

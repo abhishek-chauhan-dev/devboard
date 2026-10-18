@@ -1,0 +1,21 @@
+# Goal - Ensure the Dockerfile format, syntax and indentation is correct.
+
+name: Dockerfile lint
+
+on: 
+  workflow_call:
+
+jobs:
+  dockerfile-lint:
+    strategy:
+      matrix:
+        dockerfile: ['frontend', 'backend']
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v7
+
+    - name: Dockerfile linter
+      uses: hadolint/hadolint-action@v3.1.0
+      with:
+        dockerfile: ./{{ matrix.dockerfile }}/Dockerfile
