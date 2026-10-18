@@ -10,6 +10,7 @@ jobs:
   code-lint:
     runs-on: ubuntu-latest
     steps:
+      # Frontend Lint
       - name: Checkout Code
         uses: actions/checkout@v4
       
@@ -27,3 +28,20 @@ jobs:
       - name: Run Linter 
         run: npm run lint
         working-directory: ./frontend
+
+      # Backend Lint
+      - name: Setup go
+        uses: actions/setup-go@v7
+        with:
+          go-version: '1.23'
+          go-version-file: './backend/go.mod'
+          cache-dependency-path: './backend/go.sum'
+
+      - name: Install go dependencies
+        run: |
+          go get ./backend
+
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.13
