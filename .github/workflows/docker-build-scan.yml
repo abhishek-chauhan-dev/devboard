@@ -7,9 +7,6 @@ on:
 
 jobs:
   build-and-scan:
-    strategy:
-      matrix:
-        project: ['frontend', 'backend']
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
