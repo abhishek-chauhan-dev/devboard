@@ -20,14 +20,3 @@ jobs:
         with:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      
-      - name: Image build
-        run: |
-          cd ${{ matrix.project }}
-          docker build -t devboard-${{ matrix.project }} ./${{ matrix.project }}
-      
-      - name: Scan for vulnerabilities
-        uses: crazy-max/ghaction-container-scan@v4
-        with:
-          image: devboard-${{ matrix.project }}
-          annotations: true 

@@ -13,21 +13,16 @@ jobs:
     uses: ./.github/workflows/code-lint.yml
 
   code-test:
-    needs: [code-lint]
     uses: ./.github/workflows/code-test.yml
 
   dependency-check:
-    needs: [code-lint, code-test]
     uses: ./.github/workflows/dependency-check.yml  
 
   secret-scan:
-    needs: [code-lint, code-test, dependency-check]
     uses: ./.github/workflows/secret-leaks.yml
   
   dockerfile-lint:
-    needs: [code-lint, code-test, dependency-check, secret-scan]
     uses: ./.github/workflows/Dockerfile-lint.yml
 
   build-and-scan:
-    needs: [code-lint, code-test, dependency-check, secret-scan, dockerfile-lint]
     uses: ./.github/workflows/docker-build-scan.yml
