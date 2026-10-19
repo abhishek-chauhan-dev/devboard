@@ -26,3 +26,4 @@ jobs:
 
   build-and-scan:
     uses: ./.github/workflows/docker-build-scan.yml
+    secrets: inherit
