@@ -7,6 +7,9 @@ on:
 
 jobs:
   build-and-scan:
+    strategy:
+      matrix:
+        project: ['frontend', 'backend']
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -17,3 +20,14 @@ jobs:
         with:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: abhishekchauhandev/devboard-${{ matrix.project }}:${{ github.sha }}
+      
+      - name: Scan for vulnerabilities
+        uses: crazy-max/ghaction-container-scan@v4
+        with:
+          image: abhishekchauhandev/devboard-${{ matrix.project }}:${{ github.sha }}
