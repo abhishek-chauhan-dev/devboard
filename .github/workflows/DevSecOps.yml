@@ -9,20 +9,20 @@ on:
 
 jobs:
 
-  # code-lint:
-  #   uses: ./.github/workflows/code-lint.yml
+  code-lint:
+    uses: ./.github/workflows/code-lint.yml
 
-  # code-test:
-  #   uses: ./.github/workflows/code-test.yml
+  code-test:
+    uses: ./.github/workflows/code-test.yml
 
-  # dependency-check:
-  #   uses: ./.github/workflows/dependency-check.yml  
+  dependency-check:
+    uses: ./.github/workflows/dependency-check.yml  
 
-  # secret-scan:
-  #   uses: ./.github/workflows/secret-leaks.yml
+  secret-scan:
+    uses: ./.github/workflows/secret-leaks.yml
   
-  # dockerfile-lint:
-  #   uses: ./.github/workflows/Dockerfile-lint.yml
+  dockerfile-lint:
+    uses: ./.github/workflows/Dockerfile-lint.yml
 
   build-and-scan:
     uses: ./.github/workflows/docker-build-scan.yml
