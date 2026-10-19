@@ -24,6 +24,7 @@ jobs:
       - name: Build
         uses: docker/build-push-action@v6
         with:
+          context: ./${{ matrix.project }}
           push: true
           tags: abhishekchauhandev/devboard-${{ matrix.project }}:${{ github.sha }}
       
@@ -31,3 +32,4 @@ jobs:
         uses: crazy-max/ghaction-container-scan@v4
         with:
           image: abhishekchauhandev/devboard-${{ matrix.project }}:${{ github.sha }}
+          dockerfile: ./${{ matrix.project }}
