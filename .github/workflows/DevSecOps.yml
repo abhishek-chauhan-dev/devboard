@@ -22,10 +22,12 @@ jobs:
     uses: ./.github/workflows/secret-leaks.yml
   
   dockerfile-lint:
-    needs: ['code-lint', 'code-test', 'dependency-check', 'secret-scan']
     uses: ./.github/workflows/Dockerfile-lint.yml
 
   build-and-scan:
-    needs: ['code-lint', 'code-test', 'dependency-check', 'secret-scan', 'dockerfile-lint']
     uses: ./.github/workflows/docker-build-scan.yml
     secrets: inherit
+
+  sonarqube-scan:
+    uses: ./.github/workflows/sonarqube-scan.yml
+    secrets: inherit  
