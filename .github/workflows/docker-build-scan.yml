@@ -56,3 +56,4 @@ jobs:
           git add backend-deploy.yml frontend-deploy.yml
           git commit -m "Image tag updated to ${{ github.sha }} for backend and frontend"
           git push origin day1
+          
