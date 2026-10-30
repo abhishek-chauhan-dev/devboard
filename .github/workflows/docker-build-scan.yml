@@ -5,6 +5,9 @@ name: docker build and scan
 on:
   workflow_call:
 
+permissions:
+  contents: write
+
 jobs:
   build-and-scan:
     strategy:
@@ -25,7 +28,8 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ./${{ matrix.project }}
-          push: true
+          push: false
+          load: true
           tags: abhishekchauhandev/devboard-${{ matrix.project }}:${{ github.sha }}
       
       - name: Scan for vulnerabilities
@@ -33,3 +37,22 @@ jobs:
         with:
           image: abhishekchauhandev/devboard-${{ matrix.project }}:${{ github.sha }}
           dockerfile: ./${{ matrix.project }}
+
+      - name: Build and push image to DockerHub
+        uses: docker/build-push-action@v6
+        with:
+          context: ./${{ matrix.project }}
+          push: true
+          load: true
+          tags: abhishekchauhandev/devboard-${{ matrix.project }}:${{ github.sha }}
+      
+      - name: Update image in git repo
+        run: |
+          cd Orchestration/dev
+          git config --global user.name "github-actions-bot"
+          git config --global user.email "github-actions-bot@users.noreply.github.com"
+          sed -i "s|abhishekchauhandev/devboard-backend:v1.4|abhishekchauhandev/devboard-backend:${{ github.sha}}|" backend-deploy.yml
+          sed -i "s|abhishekchauhandev/devboard-frontend:v1.4|abhishekchauhandev/devboard-frontend:${{ github.sha }}|" frontend-deploy.yml
+          git add backend-deploy.yml frontend-deploy.yml
+          git commit -m "Image tag updated to ${{ github.sha }} for backend and frontend"
+          git push origin day1
