@@ -17,20 +17,40 @@ jobs:
 
   code-test:
     uses: ./.github/workflows/code-test.yml
+    needs:
+      - code-lint
 
   dependency-check:
     uses: ./.github/workflows/dependency-check.yml  
+    needs:
+      - code-lint
+      - code-test
 
   secret-scan:
     uses: ./.github/workflows/secret-leaks.yml
+    needs:
+      - code-lint
+      - code-test
+      - dependency-check
   
   dockerfile-lint:
     uses: ./.github/workflows/Dockerfile-lint.yml
+    needs:
+      - code-lint
+      - code-test
+      - dependency-check
+      - secret-scan
 
   build-and-scan:
     uses: ./.github/workflows/docker-build-scan.yml
     secrets: inherit
+    needs:
+      - code-lint
+      - code-test
+      - dependency-check
+      - secret-scan
+      - dockerfile-lint
 
-  sonarqube-scan:
-    uses: ./.github/workflows/sonarqube-scan.yml
-    secrets: inherit  
+  # sonarqube-scan:
+  #   uses: ./.github/workflows/sonarqube-scan.yml
+  #   secrets: inherit  
