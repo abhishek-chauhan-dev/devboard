@@ -7,6 +7,9 @@ on:
     branches:
       - day1
 
+permissions:
+  contents: write
+
 jobs:
 
   code-lint:
