@@ -6,6 +6,9 @@ on:
   push:
     branches:
       - day1
+    paths-ignore:
+      - 'Orchestration/dev/backend-deploy.yml'
+      - 'Orchestration/dev/frontend-deploy.yml'    
 
 permissions:
   contents: write
