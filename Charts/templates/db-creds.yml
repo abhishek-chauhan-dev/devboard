@@ -1,0 +1,9 @@
+apiVersion: v1
+data:
+  POSTGRES_DB: {{ .Values.secret.POSTGRES_DB }}
+  POSTGRES_PASSWORD: {{ .Values.secret.POSTGRES_PASSWORD }}
+  POSTGRES_USER: {{ .Values.secret.POSTGRES_USER }}
+kind: Secret
+metadata:
+  name: {{ .Values.secret.name }}
+  namespace: {{ .Values.namespace }}

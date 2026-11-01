@@ -1,46 +1,46 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.deployment.postgres.name }}
+  name: {{ .Values.module.postgres.name }}
   namespace: {{ .Values.namespace }}
   labels:
-    app: {{ .Values.deployment.postgres.name }}
+    app: {{ .Values.module.postgres.name }}
 spec:
-  replicas: {{ .Values.replicas }}
+  replicas: {{ .Values.module.postgres.replicas }}
   selector:
     matchLabels:
-      app: {{ .Values.deployment.postgres.name }}
+      app: {{ .Values.module.postgres.name }}
   template:
     metadata:
       labels:
-        app: {{ .Values.deployment.postgres.name }}
+        app: {{ .Values.module.postgres.name }}
     spec:
       containers:
-      - name: {{ .Values.deployment.postgres.name }}
-        image: {{ .Values.deployment.postgres.image }}
+      - name: {{ .Values.module.postgres.name }}
+        image: {{ .Values.module.postgres.image }}
         startupProbe:
           exec:
             command:
             - /bin/sh
             - -c
             - psql -U ${POSTGRES_USER} -d ${POSTGRES_DB}
-          failureThreshold: {{ .Values.deployment.postgres.failureThreshold }}
-          periodSeconds: {{ .Values.deployment.postgres.periodSeconds }}
+          failureThreshold: {{ .Values.module.postgres.startupProbe.failureThreshold }}
+          periodSeconds: {{ .Values.module.postgres.startupProbe.periodSeconds }}
         readinessProbe:
           exec:
             command:
             - /bin/sh
             - -c
             - psql -U ${POSTGRES_USER} -d ${POSTGRES_DB}
-          initialDelaySeconds: {{ .Values.deployment.postgres.initialDelaySeconds }}
-          periodSeconds: {{ .Values.deployment.postgres.periodSeconds }}
+          initialDelaySeconds: {{ .Values.module.postgres.readinessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.module.postgres.readinessProbe.periodSeconds }}
         livenessProbe:
           exec:
             command:
             - /bin/sh
             - -c
             - psql -U ${POSTGRES_USER} -d ${POSTGRES_DB}
-          periodSeconds: {{ .Values.deployment.postgres.periodSeconds }}     
+          periodSeconds: {{ .Values.module.postgres.livenessProbe.periodSeconds }}      
         env:
         - name: POSTGRES_DB
           valueFrom:
@@ -59,13 +59,13 @@ spec:
               key: POSTGRES_USER
         resources:
           requests:
-            memory: {{ .Values.deployment.postgres.resources.requests.memory }}
-            cpu: {{ .Values.deployment.postgres.resources.requests.cpu }}  
+            memory: {{ .Values.module.postgres.resources.requests.memory | quote }}
+            cpu: {{ .Values.module.postgres.resources.requests.cpu | quote }}
           limits:
-            memory: {{ .Values.deployment.postgres.resources.limits.memory }}
-            cpu: {{ .Values.deployment.postgres.resources.limits.cpu }}      
+            memory: {{ .Values.module.postgres.resources.requests.memory | quote }}
+            cpu: {{ .Values.module.postgres.resources.requests.cpu | quote }}
         ports:
-        - containerPort: {{ .Values.deployment.postgres.port }}
+        - containerPort: {{ .Values.module.postgres.port }}
         volumeMounts:
         - name: db-scripts
           mountPath: "/docker-entrypoint-initdb.d"
@@ -78,4 +78,4 @@ spec:
           name: db-scripts
       - name: data
         persistentVolumeClaim:
-          claimName: {{ .Values.PersistentVolumeClaim.name }}
+          claimName: {{ .Values.persistentVolumeClaim.name }}

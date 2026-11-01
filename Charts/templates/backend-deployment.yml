@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.module.backend.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.module.backend.name }}
+spec:
+  replicas: {{ .Values.module.backend.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.module.backend.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.module.backend.name }}
+    spec:
+      containers:
+      - name: {{ .Values.module.backend.name }}
+        image: {{ .Values.module.backend.image }}
+        resources:
+          requests:
+            memory: {{ .Values.module.backend.resources.requests.memory | quote }}
+            cpu: {{ .Values.module.backend.resources.requests.cpu | quote }}
+          limits:
+            memory: {{ .Values.module.backend.resources.limits.memory | quote }}
+            cpu: {{ .Values.module.backend.resources.limits.cpu | quote }}
+        livenessProbe:
+          httpGet:
+            path: {{ .Values.module.backend.livenessProbe.path }}
+            port: {{ .Values.module.backend.port }}
+          initialDelaySeconds: {{ .Values.module.backend.livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.module.backend.livenessProbe.periodSeconds }}
+        readinessProbe:
+          httpGet:
+            path: {{ .Values.module.backend.readinessProbe.path }}
+            port: {{ .Values.module.backend.port }}
+          initialDelaySeconds: {{ .Values.module.backend.readinessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.module.backend.readinessProbe.periodSeconds }}    
+        env:
+        - name: POSTGRES_DB
+          valueFrom:
+            secretKeyRef:
+              name: db-creds
+              key: POSTGRES_DB
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-creds
+              key: POSTGRES_PASSWORD
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: db-creds
+              key: POSTGRES_USER
+        - name: POSTGRES_URL
+          value: "postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:5432/$(POSTGRES_DB)?sslmode=disable"
+        ports:
+        - containerPort: {{ .Values.module.backend.targetPort }}

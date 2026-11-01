@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.module.backend.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  selector:
+    name: {{ .Values.module.backend.name }}
+  ports:
+    - protocol: {{ .Values.module.backend.protocol }}
+      port: {{ .Values.module.backend.port }}
+      targetPort: {{ .Values.module.backend.targetPort }}

@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.module.nginx.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.module.nginx.name }}
+spec:
+  replicas: {{ .Values.module.nginx.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.module.nginx.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.module.nginx.name }}
+    spec:
+      containers:
+      - name: {{ .Values.module.nginx.name }}
+        image: {{ .Values.module.nginx.image }}
+        resources:
+          requests:
+            memory: {{ .Values.module.nginx.resources.requests.memory | quote }}
+            cpu: {{ .Values.module.nginx.resources.requests.cpu | quote }}
+          limits:
+            memory: {{ .Values.module.nginx.resources.limits.memory | quote }}
+            cpu: {{ .Values.module.nginx.resources.limits.cpu | quote }}
+        command: ["/docker-entrypoint.sh"]    
+        args:
+        - nginx
+        - -g
+        - "daemon off;"
+        ports:
+        - containerPort: {{ .Values.module.nginx.targetPort }}
+        volumeMounts:
+        - name: {{ .Values.module.nginx.name }}-config
+          mountPath: {{ .Values.module.nginx.mountPath | quote }}
+          subPath: {{ .Values.module.nginx.subPath }}
+          readOnly: {{ .Values.module.nginx.readOnly }}
+      volumes:
+      - name: {{ .Values.module.nginx.name }}-config
+        configMap:
+          name: {{ .Values.module.nginx.name }}-config
