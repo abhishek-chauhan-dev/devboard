@@ -34,7 +34,7 @@ spec:
 
       containers:
       - name: backend
-        image: abhishekchauhandev/devboard-backend:a076dbafdddc5b4f29d04f2a27fb48cd2a173b9e
+        image: abhishekchauhandev/devboard-backend:5d4210f84942fe357583372bd10a1fcc56aa089c
         resources:
           requests:
             memory: "100Mi"
