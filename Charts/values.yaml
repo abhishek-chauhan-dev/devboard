@@ -9,7 +9,7 @@ secret:
 persistentVolumeClaim:
   name: devboard-pvc
   accessModes: ReadWriteOnce
-  storageClassName: standard
+  storageClassName: local-path
   storage: 2Gi
 
 module:
