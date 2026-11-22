@@ -1,4 +1,4 @@
 apiVersion: v2
 name: DevBoard
 description: Helm chart to install DevBoard on Kubernetes.
-version: 1.0.0
+version: 1.0.1
