@@ -7,8 +7,7 @@ on:
     branches:
       - day1
     paths-ignore:
-      - 'Orchestration/dev/backend-deploy.yml'
-      - 'Orchestration/dev/frontend-deploy.yml'    
+      - './Charts'   
 
 permissions:
   contents: write
