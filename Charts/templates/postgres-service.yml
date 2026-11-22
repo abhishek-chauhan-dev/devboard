@@ -7,6 +7,6 @@ spec:
   selector:
     app: {{ .Values.module.postgres.name }}
   ports:
-    - protocol: {{ .Values.module.postgres.protocol }}
-      port: {{ .Values.module.postgres.port }}
-      targetPort: {{ .Values.module.postgres.targetPort }}
+    - protocol: {{ .Values.module.postgres.ports.protocol }}
+      port: {{ .Values.module.postgres.ports.port }}
+      targetPort: {{ .Values.module.postgres.ports.containerPort }}

@@ -15,32 +15,23 @@ spec:
       labels:
         app: {{ .Values.module.postgres.name }}
     spec:
+      # Make sure to add the matching label on the node defined below.
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: topology.kubernetes.io/zone
+                operator: In
+                values:
+                - us-west-2
       containers:
       - name: {{ .Values.module.postgres.name }}
         image: {{ .Values.module.postgres.image }}
-        startupProbe:
-          exec:
-            command:
-            - /bin/sh
-            - -c
-            - psql -U ${POSTGRES_USER} -d ${POSTGRES_DB}
-          failureThreshold: {{ .Values.module.postgres.startupProbe.failureThreshold }}
-          periodSeconds: {{ .Values.module.postgres.startupProbe.periodSeconds }}
-        readinessProbe:
-          exec:
-            command:
-            - /bin/sh
-            - -c
-            - psql -U ${POSTGRES_USER} -d ${POSTGRES_DB}
-          initialDelaySeconds: {{ .Values.module.postgres.readinessProbe.initialDelaySeconds }}
-          periodSeconds: {{ .Values.module.postgres.readinessProbe.periodSeconds }}
-        livenessProbe:
-          exec:
-            command:
-            - /bin/sh
-            - -c
-            - psql -U ${POSTGRES_USER} -d ${POSTGRES_DB}
-          periodSeconds: {{ .Values.module.postgres.livenessProbe.periodSeconds }}      
+        securityContext:
+          allowPrivilegeEscalation: {{ .Values.module.postgres.securityContext.allowPrivilegeEscalation }}
+          appArmorProfile:
+            type: {{ .Values.module.postgres.securityContext.appArmorProfile.type }}
         env:
         - name: POSTGRES_DB
           valueFrom:
@@ -62,10 +53,10 @@ spec:
             memory: {{ .Values.module.postgres.resources.requests.memory | quote }}
             cpu: {{ .Values.module.postgres.resources.requests.cpu | quote }}
           limits:
-            memory: {{ .Values.module.postgres.resources.requests.memory | quote }}
-            cpu: {{ .Values.module.postgres.resources.requests.cpu | quote }}
+            memory: {{ .Values.module.postgres.resources.limits.memory | quote }}
+            cpu: {{ .Values.module.postgres.resources.limits.cpu | quote }}
         ports:
-        - containerPort: {{ .Values.module.postgres.port }}
+        - containerPort: {{ .Values.module.postgres.ports.containerPort }}
         volumeMounts:
         - name: db-scripts
           mountPath: "/docker-entrypoint-initdb.d"

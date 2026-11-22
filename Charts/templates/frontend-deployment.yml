@@ -26,4 +26,4 @@ spec:
             memory: {{ .Values.module.frontend.resources.limits.memory | quote }}
             cpu: {{ .Values.module.frontend.resources.limits.cpu | quote }}
         ports:
-        - containerPort: {{ .Values.module.frontend.targetPort }}
+        - containerPort: {{ .Values.module.frontend.ports.containerPort }}

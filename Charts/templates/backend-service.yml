@@ -5,8 +5,8 @@ metadata:
   namespace: {{ .Values.namespace }}
 spec:
   selector:
-    name: {{ .Values.module.backend.name }}
+    app: {{ .Values.module.backend.name }}
   ports:
-    - protocol: {{ .Values.module.backend.protocol }}
-      port: {{ .Values.module.backend.port }}
-      targetPort: {{ .Values.module.backend.targetPort }}
+    - protocol: {{ .Values.module.backend.ports.protocol }}
+      port: {{ .Values.module.backend.ports.port }}
+      targetPort: {{ .Values.module.backend.ports.containerPort }}

@@ -7,6 +7,6 @@ spec:
   selector:
     app: {{ .Values.module.frontend.name }}
   ports:
-    - protocol: {{ .Values.module.frontend.protocol }}
-      port: {{ .Values.module.frontend.port }}
-      targetPort: {{ .Values.module.frontend.targetPort }}
+    - protocol: {{ .Values.module.frontend.ports.protocol }}
+      port: {{ .Values.module.frontend.ports.port }}
+      targetPort: {{ .Values.module.frontend.ports.containerPort }}

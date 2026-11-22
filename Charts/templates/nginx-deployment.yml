@@ -20,24 +20,24 @@ spec:
         image: {{ .Values.module.nginx.image }}
         resources:
           requests:
-            memory: {{ .Values.module.nginx.resources.requests.memory | quote }}
-            cpu: {{ .Values.module.nginx.resources.requests.cpu | quote }}
+            memory: {{ .Values.module.nginx.resources.requests.memory | quote}}
+            cpu: {{ .Values.module.nginx.resources.requests.cpu | quote}}
           limits:
-            memory: {{ .Values.module.nginx.resources.limits.memory | quote }}
-            cpu: {{ .Values.module.nginx.resources.limits.cpu | quote }}
-        command: ["/docker-entrypoint.sh"]    
+            memory: {{ .Values.module.nginx.resources.limits.memory | quote}}
+            cpu: {{ .Values.module.nginx.resources.limits.cpu | quote}}
+        command: {{ .Values.module.nginx.command }}  
         args:
-        - nginx
+        - {{ .Values.module.nginx.name }}
         - -g
         - "daemon off;"
         ports:
-        - containerPort: {{ .Values.module.nginx.targetPort }}
+        - containerPort: {{ .Values.module.nginx.ports.containerPort }}
         volumeMounts:
         - name: {{ .Values.module.nginx.name }}-config
-          mountPath: {{ .Values.module.nginx.mountPath | quote }}
-          subPath: {{ .Values.module.nginx.subPath }}
-          readOnly: {{ .Values.module.nginx.readOnly }}
+          mountPath: "/etc/nginx/conf.d/default.conf"
+          subPath: nginx.conf
+          readOnly: true
       volumes:
       - name: {{ .Values.module.nginx.name }}-config
         configMap:
-          name: {{ .Values.module.nginx.name }}-config
+          name: {{ .Values.module.nginx.name }}

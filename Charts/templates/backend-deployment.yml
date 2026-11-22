@@ -20,23 +20,11 @@ spec:
         image: {{ .Values.module.backend.image }}
         resources:
           requests:
-            memory: {{ .Values.module.backend.resources.requests.memory | quote }}
-            cpu: {{ .Values.module.backend.resources.requests.cpu | quote }}
+            memory: {{ .Values.module.backend.resources.requests.memory | quote  }}
+            cpu: {{ .Values.module.backend.resources.requests.cpu | quote  }}
           limits:
             memory: {{ .Values.module.backend.resources.limits.memory | quote }}
             cpu: {{ .Values.module.backend.resources.limits.cpu | quote }}
-        livenessProbe:
-          httpGet:
-            path: {{ .Values.module.backend.livenessProbe.path }}
-            port: {{ .Values.module.backend.port }}
-          initialDelaySeconds: {{ .Values.module.backend.livenessProbe.initialDelaySeconds }}
-          periodSeconds: {{ .Values.module.backend.livenessProbe.periodSeconds }}
-        readinessProbe:
-          httpGet:
-            path: {{ .Values.module.backend.readinessProbe.path }}
-            port: {{ .Values.module.backend.port }}
-          initialDelaySeconds: {{ .Values.module.backend.readinessProbe.initialDelaySeconds }}
-          periodSeconds: {{ .Values.module.backend.readinessProbe.periodSeconds }}    
         env:
         - name: POSTGRES_DB
           valueFrom:
@@ -56,4 +44,4 @@ spec:
         - name: POSTGRES_URL
           value: "postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:5432/$(POSTGRES_DB)?sslmode=disable"
         ports:
-        - containerPort: {{ .Values.module.backend.targetPort }}
+        - containerPort: {{ .Values.module.backend.ports.containerPort}}

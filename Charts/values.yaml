@@ -1,33 +1,14 @@
 namespace: devboard
 
-secret:
-  name: db-creds
-  POSTGRES_DB: ZGV2Ym9hcmQ=
-  POSTGRES_PASSWORD: ZGV2Ym9hcmQ=
-  POSTGRES_USER: ZGV2Ym9hcmQ=
-
-persistentVolumeClaim:
-  name: devboard-pvc
-  accessModes: ReadWriteOnce
-  storageClassName: local-path
-  storage: 2Gi
-
 module:
-  postgres:
-    name: postgres
-    image: postgres:16-alpine
-    port: 5432
-    targetPort: 5432
-    protocol: TCP
+  backend:
     replicas: 1
-    startupProbe:
-      failureThreshold: 30
-      periodSeconds: 10
-    readinessProbe:
-      initialDelaySeconds: 15
-      periodSeconds: 10
-    livenessProbe:
-      periodSeconds: 10
+    name: backend
+    image: abhishekchauhandev/devboard-backend:82ffc15db85de361db4eae96a9d844fad7e56216
+    ports:
+      containerPort: 8080
+      protocol: TCP
+      port: 8081
     resources:
       requests:
         memory: "100Mi"
@@ -36,36 +17,14 @@ module:
         memory: "200Mi"
         cpu: "200m"
   
-  backend:
-    name: backend
-    image: abhishekchauhandev/devboard-backend:82ffc15db85de361db4eae96a9d844fad7e56216
-    port: 8081
-    targetPort: 8080
-    protocol: TCP
-    replicas: 1
-    resources:
-      requests:
-        memory: "100Mi"
-        cpu: "100m"
-      limits:
-        memory: "200Mi"
-        cpu: "200m"
-    livenessProbe:
-      path: /health
-      initialDelaySeconds: 3
-      periodSeconds: 3
-    readinessProbe:
-      path: /health
-      initialDelaySeconds: 3
-      periodSeconds: 3
-
   frontend:
+    replicas: 1
     name: frontend
     image: abhishekchauhandev/devboard-frontend:82ffc15db85de361db4eae96a9d844fad7e56216
-    replicas: 1
-    protocol: TCP
-    port: 8080
-    targetPort: 4173
+    ports:
+      containerPort: 4173
+      protocol: TCP
+      port: 8080
     resources:
       requests:
         memory: "200Mi"
@@ -75,15 +34,14 @@ module:
         cpu: "300m"
   
   nginx:
+    replicas: 1
     name: nginx
     image: nginx:1.30.4
-    protocol: TCP
-    port: 8082
-    targetPort: 80
-    replicas: 1
-    mountPath: "/etc/nginx/conf.d/default.conf"
-    subPath: nginx.conf
-    readOnly: true
+    command: ["/docker-entrypoint.sh"]
+    ports:
+      containerPort: 80
+      protocol: TCP
+      port: 8082
     resources:
       requests:
         memory: "100Mi"
@@ -91,3 +49,37 @@ module:
       limits:
         memory: "200Mi"
         cpu: "200m"
+
+  postgres:
+    replicas: 1
+    name: postgres
+    image: postgres:16-alpine
+    ports:
+      containerPort: 5432
+      protocol: TCP
+      port: 5432
+    securityContext:
+      allowPrivilegeEscalation: true
+      appArmorProfile:
+        type: Unconfined  
+    resources:
+      requests:
+        memory: "100Mi"
+        cpu: "100m"
+      limits:
+        memory: "100Mi"
+        cpu: "100m"
+
+secret:
+  name: db-creds
+  POSTGRES_DB: ZGV2Ym9hcmQ=
+  POSTGRES_PASSWORD: ZGV2Ym9hcmQ=
+  POSTGRES_USER: ZGV2Ym9hcmQ=
+
+persistentVolumeClaim:
+  name: devboard-pvc
+  accessModes: ReadWriteOnce
+  storageClassName: local-path #local-path for K3s cluster
+  resources:
+    requests:
+      storage: 2Gi

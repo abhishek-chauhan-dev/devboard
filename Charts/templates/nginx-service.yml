@@ -7,6 +7,6 @@ spec:
   selector:
     app: {{ .Values.module.nginx.name }}
   ports:
-    - protocol: {{ .Values.module.nginx.protocol }}
-      port: {{ .Values.module.nginx.port }}
-      targetPort: {{ .Values.module.nginx.targetPort }}
+    - protocol: {{ .Values.module.nginx.ports.protocol }}
+      port: {{ .Values.module.nginx.ports.port }}
+      targetPort: {{ .Values.module.nginx.ports.containerPort }}
