@@ -7,7 +7,7 @@ on:
     branches:
       - day1
     paths-ignore:
-      - './Charts'   
+      - 'Charts/**'
 
 permissions:
   contents: write
